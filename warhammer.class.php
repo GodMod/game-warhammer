@@ -22,21 +22,98 @@ if ( !defined('EQDKP_INC') ){
 
 if(!class_exists('warhammer')) {
 	class warhammer extends game_generic {
-		public static $shortcuts = array();
+		public $version	= '2.1';
 		protected $this_game	= 'warhammer';
 		protected $types		= array('classes', 'races', 'factions', 'filters', 'roles');
-		public $icons			= array('classes', 'classes_big', 'races', 'events', 'roles');
 		protected $classes		= array();
 		protected $races		= array();
 		protected $factions		= array();
 		protected $filters		= array();
 		public $langs			= array('english', 'german');
 
+		protected $class_dependencies = array(
+			array(
+				'name'		=> 'faction',
+				'type'		=> 'factions',
+				'admin' 	=> true,
+				'decorate'	=> false,
+				'parent'	=> false,
+			),
+			array(
+				'name'		=> 'race',
+				'type'		=> 'races',
+				'admin'		=> false,
+				'decorate'	=> true,
+				'parent'	=> array(
+					'faction' => array(
+						'order'	=> array(0,1,2,3),
+						'chaos'	=> array(0,4,5,6),
+					),
+				),
+			),
+			array(
+				'name'		=> 'class',
+				'type'		=> 'classes',
+				'admin'		=> false,
+				'decorate'	=> true,
+				'primary'	=> true,
+				'colorize'	=> true,
+				'roster'	=> true,
+				'recruitment' => true,
+				'parent'	=> array(
+					'race' => array(
+						0 	=> 'all',					// Unknown
+						1 	=> array(7,9,10,15),		// Dwards
+						2 	=> array(4,11,20,23),		// Empire
+						3 	=> array(1,16,19,21),		// High Elves
+						4 	=> array(3,8,14,18),		// Greenskins
+						5 	=> array(5,12,13,24),		// Chaos
+						6 	=> array(2,6,17,22),		// Dark Elves
+					),
+				),
+			),
+		);
+		
+		public $default_roles = array(
+			1	=> array(2, 3, 5, 10, 11, 19),
+			2	=> array(9, 13, 14, 21, 22, 23),
+			3	=> array(4, 7, 12, 16, 17, 18),
+			4	=> array(1, 6, 8, 15, 20, 24),
+			5	=> array(1, 6, 8, 15, 20, 24),
+		);
+		
+		protected $class_colors = array(
+			0 => '#ffffff',
+			1 => '#A0AAFF',
+			2 => '#CD8C3C',
+			3 => '#CD8C3C',
+			4 => '#FFB400',
+			5 => '#CD8C3C',
+			6 => '#B478FF',
+			7 => '#FFB400',
+			8 => '#A0AAFF',
+			9 => '#FF5050',
+			10 => '#CD8C3C',
+			11 => '#CD8C3C',
+			12 => '#FFB400',
+			13 => '#FF5050',
+			14 => '#FF5050',
+			15 => '#A0AAFF',
+			16 => '#FFB400',
+			17 => '#FFB400',
+			18 => '#FFB400',
+			19 => '#CD8C3C',
+			20 => '#B478FF',
+			21 => '#FF5050',
+			22 => '#FF5050',
+			23 => '#FF5050',
+			24 => '#A0AAFF',
+		);
+
 		protected $glang		= array();
 		protected $lang_file	= array();
 		protected $path			= '';
 		public $lang			= false;
-		public $version	= '2.1';
 
 		/**
 		* Initialises filters
@@ -66,7 +143,7 @@ if(!class_exists('warhammer')) {
 					array('name' => $this->glang('melee', true, $lang), 'value' => 'class:9,13,14,21,22,23'),
 					array('name' => $this->glang('range', true, $lang), 'value' => 'class:4,7,12,16,17,18'),
 					array('name' => $this->glang('support', true, $lang), 'value' => 'class:1,6,8,15,20,24'),
-					array('name' => $this->glang('healer', true, $lang), 'value' => 'class:1,6,8,15,20,24'),					
+					array('name' => $this->glang('healer', true, $lang), 'value' => 'class:1,6,8,15,20,24'),
 				));
 				
 			}
@@ -79,34 +156,6 @@ if(!class_exists('warhammer')) {
 		* @return array
 		*/
 		public function get_OnChangeInfos($install=false){
-			//classcolors
-			$info['class_color'] = array(
-				0 => '#ffffff',
-				1 => '#A0AAFF',
-				2 => '#CD8C3C',
-				3 => '#CD8C3C',
-				4 => '#FFB400',
-				5 => '#CD8C3C',
-				6 => '#B478FF',
-				7 => '#FFB400',
-				8 => '#A0AAFF',
-				9 => '#FF5050',
-				10 => '#CD8C3C',
-				11 => '#CD8C3C',
-				12 => '#FFB400',
-				13 => '#FF5050',
-				14 => '#FF5050',
-				15 => '#A0AAFF',
-				16 => '#FFB400',
-				17 => '#FFB400',
-				18 => '#FFB400',
-				19 => '#CD8C3C',
-				20 => '#B478FF',
-				21 => '#FF5050',
-				22 => '#FF5050',
-				23 => '#FF5050',
-				24 => '#A0AAFF',				
-			);
             
             //lets do some tweak on the templates dependent on the game
             $info['aq'] = array();
@@ -139,5 +188,4 @@ if(!class_exists('warhammer')) {
         }
 	}
 }
-if(version_compare(PHP_VERSION, '5.3.0', '<')) registry::add_const('short_warhammer', warhammer::$shortcuts);
 ?>
