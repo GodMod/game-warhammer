@@ -156,35 +156,25 @@ if(!class_exists('warhammer')) {
 		* @return array
 		*/
 		public function install($install=false){
-            
-            //lets do some tweak on the templates dependent on the game
-            
-            
-            //Do this SQL Query NOT if the Eqdkp is installed -> only @ the first install
-            //if($install){            
-            
-            // Events
-            
-            array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (50, "'.$this->glang('event1').'", 0.00, "default", NULL, "altdorfsewers.png"); ');
-            array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (51, "'.$this->glang('event2').'", 0.00, "default", NULL, "bastionstair.png"); ');
-            array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (52, "'.$this->glang('event3').'", 0.00, "default", NULL, "bilerotburrow.png"); ');
-            array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (53, "'.$this->glang('event4').'", 0.00, "default", NULL, "bloodwrought.png"); ');
-            array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (54, "'.$this->glang('event5').'", 0.00, "default", NULL, "lostvale.png"); ');
-            array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (55, "'.$this->glang('event6').'", 0.00, "default", NULL, "mountgunbad.png"); ');
-            array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (56, "'.$this->glang('event7').'", 0.00, "default", NULL, "sacellum.png"); ');
-            array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (57, "'.$this->glang('event8').'", 0.00, "default", NULL, "sigmarcrypts.png"); ');
-            array_push($info['aq'], 'INSERT INTO __events (event_id, event_name, event_value, event_added_by, event_updated_by, event_icon) VALUES (58, "'.$this->glang('event9').'", 0.00, "default", NULL, "warpblade.png"); ');
-                        
-            //Connect them to the Default-Multidkp-Pool
-            
-            array_push($info['aq'], 'INSERT INTO __multidkp (multidkp_id, multidkp_name, multidkp_desc) VALUES (2, "default", "Default-Pool");');
-            array_push($info['aq'], 'INSERT INTO __multidkp2event (multidkp2event_multi_id, multidkp2event_event_id) VALUES (1,50), (1,51), (1,52), (1,53), (1,54), (1,55), (1,56), (1,57), (1,58);');
-            array_push($info['aq'], 'INSERT INTO __itempool (itempool_id, itempool_name, itempool_desc) VALUES (2, "default", "Default itempool");');
-            array_push($info['aq'], 'INSERT INTO __multidkp2itempool (multidkp2itempool_itempool_id, multidkp2itempool_multi_id) VALUES (2, 2);');
+			$this->game->resetEvents();
+			
+			$arrEventIDs = array();
+			$arrEventIDs[] = $this->game->addEvent($this->glang('event1'), 0, "altdorfsewers.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('event2'), 0, "bastionstair.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('event3'), 0, "bilerotburrow.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('event4'), 0, "bloodwrought.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('event5'), 0, "lostvale.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('event6'), 0, "mountgunbad.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('event7'), 0, "sacellum.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('event8'), 0, "sigmarcrypts.png");
+			$arrEventIDs[] = $this->game->addEvent($this->glang('event9'), 0, "warpblade.png");
+			
+			$this->game->resetMultiDKPPools();
+			$this->game->resetItempools();
+			$intItempoolID = $this->game->addItempool("Default", "Default Itempool");
+			
+			$this->game->addMultiDKPPool("Default", "Default MultiDKPPool", $arrEventIDs, array($intItempoolID));
 
-            //}
-            
-            return $info;
         }
 	}
 }
