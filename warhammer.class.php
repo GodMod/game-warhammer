@@ -155,10 +155,10 @@ if(!class_exists('warhammer')) {
 		* @param bool $install
 		* @return array
 		*/
-		public function get_OnChangeInfos($install=false){
+		public function install($install=false){
             
             //lets do some tweak on the templates dependent on the game
-            $info['aq'] = array();
+            
             
             //Do this SQL Query NOT if the Eqdkp is installed -> only @ the first install
             //if($install){            
