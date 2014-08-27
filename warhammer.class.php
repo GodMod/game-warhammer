@@ -4,15 +4,14 @@
  * License:		Creative Commons - Attribution-Noncommercial-Share Alike 3.0 Unported
  * Link:		http://creativecommons.org/licenses/by-nc-sa/3.0/
  * -----------------------------------------------------------------------
- * Began:		2009
  * Date:		$Date$
  * -----------------------------------------------------------------------
  * @author		$Author$
- * @copyright	2006-2011 EQdkp-Plus Developer Team
+ * @copyright	2006-2014 EQdkp-Plus Developer Team
  * @link		http://eqdkp-plus.com
  * @package		eqdkp-plus
  * @version		$Rev$
- * 
+ *
  * $Id$
  */
 
@@ -22,14 +21,15 @@ if ( !defined('EQDKP_INC') ){
 
 if(!class_exists('warhammer')) {
 	class warhammer extends game_generic {
-		public $version	= '2.1';
-		protected $this_game	= 'warhammer';
-		protected $types		= array('classes', 'races', 'factions', 'filters', 'roles');
-		protected $classes		= array();
-		protected $races		= array();
-		protected $factions		= array();
-		protected $filters		= array();
-		public $langs			= array('english', 'german');
+		protected static $apiLevel	= 20;
+		public $version				= '2.1';
+		protected $this_game		= 'warhammer';
+		protected $types			= array('classes', 'races', 'factions', 'filters', 'roles');
+		protected $classes			= array();
+		protected $races			= array();
+		protected $factions			= array();
+		protected $filters			= array();
+		public $langs				= array('english', 'german');
 
 		protected $class_dependencies = array(
 			array(
@@ -73,7 +73,7 @@ if(!class_exists('warhammer')) {
 				),
 			),
 		);
-		
+
 		public $default_roles = array(
 			1	=> array(2, 3, 5, 10, 11, 19),
 			2	=> array(9, 13, 14, 21, 22, 23),
@@ -81,7 +81,7 @@ if(!class_exists('warhammer')) {
 			4	=> array(1, 6, 8, 15, 20, 24),
 			5	=> array(1, 6, 8, 15, 20, 24),
 		);
-		
+
 		protected $class_colors = array(
 			0 => '#ffffff',
 			1 => '#A0AAFF',
@@ -115,11 +115,6 @@ if(!class_exists('warhammer')) {
 		protected $path			= '';
 		public $lang			= false;
 
-		/**
-		* Initialises filters
-		*
-		* @param array $langs
-		*/
 		protected function load_filters($langs){
 			if(!$this->classes) {
 				$this->load_type('classes', $langs);
@@ -130,7 +125,7 @@ if(!class_exists('warhammer')) {
 				foreach($this->classes[$lang] as $id => $name) {
 					$this->filters[$lang][] = array('name' => $name, 'value' => 'class:'.$id);
 				}
-				
+
 				$this->filters[$lang] = array_merge($this->filters[$lang], array(
 					array('name' => '-----------', 'value' => false),
 					array('name' => $this->glang('robe', true, $lang), 'value' => 'class:1,4,8,12,15,17,24'), 
@@ -149,15 +144,9 @@ if(!class_exists('warhammer')) {
 			}
 		}
 
-		/**
-		* Returns Information to change the game
-		*
-		* @param bool $install
-		* @return array
-		*/
 		public function install($install=false){
 			$this->game->resetEvents();
-			
+
 			$arrEventIDs = array();
 			$arrEventIDs[] = $this->game->addEvent($this->glang('event1'), 0, "altdorfsewers.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('event2'), 0, "bastionstair.png");
@@ -168,14 +157,13 @@ if(!class_exists('warhammer')) {
 			$arrEventIDs[] = $this->game->addEvent($this->glang('event7'), 0, "sacellum.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('event8'), 0, "sigmarcrypts.png");
 			$arrEventIDs[] = $this->game->addEvent($this->glang('event9'), 0, "warpblade.png");
-			
+
 			$this->game->resetMultiDKPPools();
 			$this->game->resetItempools();
 			$intItempoolID = $this->game->addItempool("Default", "Default Itempool");
-			
-			$this->game->addMultiDKPPool("Default", "Default MultiDKPPool", $arrEventIDs, array($intItempoolID));
 
-        }
+			$this->game->addMultiDKPPool("Default", "Default MultiDKPPool", $arrEventIDs, array($intItempoolID));
+		}
 	}
 }
 ?>
