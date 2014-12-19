@@ -26,7 +26,7 @@ if ( !defined('EQDKP_INC') ){
 if(!class_exists('warhammer')) {
 	class warhammer extends game_generic {
 		protected static $apiLevel	= 20;
-		public $version				= '2.1';
+		public $version				= '2.1'; //blupp
 		protected $this_game		= 'warhammer';
 		protected $types			= array('classes', 'races', 'factions', 'filters', 'roles');
 		protected $classes			= array();
